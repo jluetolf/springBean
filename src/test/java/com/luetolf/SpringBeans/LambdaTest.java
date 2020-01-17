@@ -11,7 +11,6 @@ import java.util.function.IntBinaryOperator;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static jdk.nashorn.internal.objects.NativeArray.reduce;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 //https://www.geeksforgeeks.org/functional-interfaces-java/
@@ -60,14 +59,15 @@ public class LambdaTest {
 
     }
 
+    //https://stackoverflow.com/questions/20001427/double-colon-operator-in-java-8
     @Test
     public void reduce1() {
 
-        reduce(new IntBinaryOperator() {
-            int applyAsInt(int left, int right) {
-                return Math.max(left, right);
-            }
-        });
+//        reduce(new IntBinaryOperator() {
+//            int applyAsInt(int left, int right) {
+//                return Math.max(left, right);
+//            }
+//        });
     }
 }
 
