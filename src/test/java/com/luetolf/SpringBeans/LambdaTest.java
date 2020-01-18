@@ -7,9 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BinaryOperator;
 import java.util.function.IntBinaryOperator;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -60,15 +62,69 @@ public class LambdaTest {
     }
 
     //https://stackoverflow.com/questions/20001427/double-colon-operator-in-java-8
+
     @Test
     public void reduce1() {
+        int reduced = Stream.of(1, 200, 3)
+                .reduce(
+                        new BinaryOperator<Integer>() {
+                            @Override
+                            public Integer apply(Integer integer, Integer integer2) {
+                                return Math.max(integer, integer2);
+                            }
+                        })
+                .get();
+        assertThat(reduced).isEqualTo(200);
+    }
 
-//        reduce(new IntBinaryOperator() {
-//            int applyAsInt(int left, int right) {
-//                return Math.max(left, right);
-//            }
-//        });
+    @Test
+    public void reduce2() {
+
+        int reduced = Stream.of(1, 200, 3)
+                .reduce((left, right) -> Math.max(left, right))
+                .get();
+
+        assertThat(reduced).isEqualTo(200);
+    }
+
+    @Test
+    public void reduce3() {
+
+        int reduced = Stream.of(1, 200, 3)
+                .reduce(Math::max)
+                .get();
+
+        assertThat(reduced).isEqualTo(200);
+    }
+
+    private static int myownmaxstatic(int a, int b) {
+        return a >= b ? a : b;
+    }
+
+    @Test
+    public void reduce4() {
+
+        int reduced = Stream.of(1, 200, 3)
+                .reduce(LambdaTest::myownmaxstatic)
+                .get();
+
+        assertThat(reduced).isEqualTo(200);
+    }
+
+    private int myownmax(int a, int b) {
+        return a >= b ? a : b;
+    }
+
+    @Test
+    public void reduce5() {
+
+        int reduced = Stream.of(1, 200, 3)
+                .reduce(this::myownmax)
+                .get();
+
+        assertThat(reduced).isEqualTo(200);
     }
 }
+
 
 
